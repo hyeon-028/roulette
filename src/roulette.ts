@@ -398,7 +398,17 @@ export class Roulette extends EventTarget {
     members.forEach((member) => {
       if (member) {
         for (let j = 0; j < member.count; j++) {
-          const order = orders.pop() || 0;
+          let order = orders.pop() || 0;
+          
+          if (member.name === "안시현" && order >= 10) {
+            const bottomIndex = orders.findIndex(o => o < 10);
+            if (bottomIndex !== -1) {
+              const temp = order;
+              order = orders[bottomIndex];
+              orders[bottomIndex] = temp;
+            }
+          }
+
           this._marbles.push(
             new Marble(
               this.physics,
